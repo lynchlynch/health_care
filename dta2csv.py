@@ -1,10 +1,7 @@
 #原始数据是dta格式，需要用stata软件打开，因此转换成csv格式
 import pandas as pd
 import os
-
-
-# from pyecharts import Geo, Map
-
+from tqdm import tqdm
 
 def load_large_dta(fname):
     import sys
@@ -22,7 +19,7 @@ def load_large_dta(fname):
     except (StopIteration, KeyboardInterrupt):
         pass
 
-    print('\nloaded {} rows'.format(len(df)))
+    # print('\nloaded {} rows'.format(len(df)))
 
     return df
 
@@ -34,7 +31,6 @@ for single_file in file_list:
         os.remove(raw_data_path+single_file)
 
 file_list = os.listdir(raw_data_path)
-for single_file in file_list:
-    print(single_file)
-    trans_data = load_large_dta(single_file)
-    trans_data.to_csv('D:/pydir/health_care/raw_data/Charles2018/Demographic_Background.csv',index=False,encoding='utf_8_sig')
+for single_file in tqdm(file_list,desc='processing'):
+    trans_data = load_large_dta(raw_data_path+single_file)
+    trans_data.to_csv(raw_data_path + single_file.split('.')[0] + '.csv',index=False,encoding='utf_8_sig')
