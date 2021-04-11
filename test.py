@@ -7,7 +7,7 @@ from sklearn.metrics import classification_report, roc_auc_score
 # 加载 sklearn 自带的乳腺癌（分类）数据集
 X, y = load_breast_cancer(return_X_y=True)
 
-# print(X, y)
+print(set(list(X)))
 
 # 以指定比例将数据集分为训练集和测试集
 X_train, X_test, y_train, y_test = train_test_split(
