@@ -23,7 +23,7 @@ def load_large_dta(fname):
 
     return df
 
-raw_data_path = 'D:/pydir/health_care/raw_data/Charles2018/'
+raw_data_path = 'D:/pydir/health_care/raw_data/Charles2015/'
 
 file_list = os.listdir(raw_data_path)
 for single_file in file_list:
