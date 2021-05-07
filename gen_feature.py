@@ -14,13 +14,16 @@ wear_glass_state = health_function_data['da032'].tolist()
 eyesight_at_distance = health_function_data['da033'].tolist()
 eyesight_up_close = health_function_data['da034'].tolist()
 for index in range(len(eyesight_at_distance)):
-    if wear_glass_state[index] == '3 No' and eyesight_at_distance[index] <= 2 and eyesight_up_close[index] <= 2:
+    if wear_glass_state[index] == '3 No' and \
+            (eyesight_at_distance[index] == '1 Excellent' or eyesight_at_distance[index] == '2 Very Good') and \
+            (eyesight_up_close[index] == '1 Excellent' or eyesight_up_close[index] == '2 Very Good'):
         vision_state.append('3')
     elif (wear_glass_state[index] == '1 Yes' or wear_glass_state[index] == '4 Sometimes') and \
-            (eyesight_at_distance[index] == 3 or eyesight_at_distance[index]) == 4 and \
-            (eyesight_up_close[index] == 3 or eyesight_up_close[index] == 4):
+            (eyesight_at_distance[index] == '3 Good' or eyesight_at_distance[index] == '4 Fair') and \
+            (eyesight_up_close[index] == '3 Good' or eyesight_up_close[index] == '4 Fair'):
         vision_state.append('2')
-    elif wear_glass_state[index] == '2 Legally Blind' and eyesight_at_distance[index] == 5 and eyesight_up_close[index] == 5:
+    elif wear_glass_state[index] == '2 Legally Blind' and eyesight_at_distance[index] == '5 Poor' and \
+            eyesight_up_close[index] == '5 Poor':
         vision_state.append('1')
     else:
         vision_state.append('997')
