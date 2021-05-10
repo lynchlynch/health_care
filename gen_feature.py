@@ -31,9 +31,15 @@ for index in range(len(eyesight_at_distance)):
         vision_state.append('997')
 
 #认知能力涵盖面很广，包含老年人的定向力、记忆力、回忆力和计算力四个方面。问卷中通过12个问题的测评。
-#
 cognition_data = pd.read_csv(raw_data_path + 'Cognition.csv')
-# print(list(set(cognition_data['dc001_w4'].tolist())))
-for index in range(len(cognition_data)):
-    if pd.isnull(cognition_data['dc001_w4'].tolist()[index]):
-        print(index)
+#这张表很多空值，因此选取非空的处理。我们只用到其中的某些行，所以首先把这些用到的这些列选出来，组成新表，然后删除空值
+select_col_list = ['dc001_w4','dc002_w4','dc003_w4','dc005_w4','dc006_w4',
+                   'dc007_w4','dc008_w4','dc009_w4','dc010_w4','dc012_w4',
+                   'dc013_w4_1_s1','dc013_w4_1_s2','dc013_w4_1_s3','dc013_w4_1_s4',
+                   'dc014_w4_1_1','dc014_w4_2_1','dc014_w4_3_1','dc014_w4_4_1','dc014_w4_5_1',
+                   'dc013_w4_2_s1','dc013_w4_2_s2','dc013_w4_2_s3','dc013_w4_2_s4','dc016_w4','dc017_w4','dc018_w4',
+                   'dc020_w4','dc021_w4','dc022_w4','dc019_w4','dc023_w4',
+                   'dc009','dc010','dc011','dc012','dc013','dc014','dc015','dc016','dc017','dc018']
+
+a = cognition_data[select_col_list]
+print(a)
