@@ -1,2 +1,2 @@
-a = '1 Correct'
-print(int(a.split(' ')[0]))
+a = [1,2,1,1,3]
+print(a.count(1))

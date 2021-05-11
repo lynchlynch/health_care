@@ -41,5 +41,14 @@ select_col_list = ['dc001_w4','dc002_w4','dc003_w4','dc005_w4','dc006_w4',
                    'dc020_w4','dc021_w4','dc022_w4','dc019_w4','dc023_w4',
                    'dc009','dc010','dc011','dc012','dc013','dc014','dc015','dc016','dc017','dc018']
 
-a = cognition_data[select_col_list]
-print(a)
+select_df = cognition_data[select_col_list].copy(deep=True)
+select_df = select_df.dropna(how='any')
+select_df = select_df.reset_index(drop=True)
+select_df.to_csv(raw_data_path + 'Health_Status_and_Functioning_brief.csv',index=False)
+select_df = pd.read_csv(raw_data_path + 'Health_Status_and_Functioning_brief.csv')
+total_score_list = []
+for index in range(len(select_df)):
+    q1_list = select_df.iloc[index][['dc001_w4','dc002_w4','dc003_w4','dc005_w4','dc006_w4']].tolist()
+    q1_score = q1_list.count('1 Correct')
+
+    # single_total_score =
