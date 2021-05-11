@@ -50,5 +50,6 @@ total_score_list = []
 for index in range(len(select_df)):
     q1_list = select_df.iloc[index][['dc001_w4','dc002_w4','dc003_w4','dc005_w4','dc006_w4']].tolist()
     q1_score = q1_list.count('1 Correct')
-
+    q2_list = select_df.iloc[index][['dc007_w4','dc008_w4','dc009_w4','dc010_w4','dc012_w4']].tolist()
+    q2_score = q2_list.count('1 Correct')
     # single_total_score =
