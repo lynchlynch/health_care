@@ -2,6 +2,8 @@ import pandas as pd
 import os
 import numpy as np
 
+import trans_fuc as tf
+
 # raw_data_path = '/Users/pei/pydir/health_care/raw_data/Charles2018/'
 raw_data_path = 'D:/pydir/health_care/raw_data/Charles2018/'
 health_function_data = pd.read_csv(raw_data_path + 'Health_Status_and_Functioning.csv')
@@ -38,18 +40,36 @@ select_col_list = ['dc001_w4','dc002_w4','dc003_w4','dc005_w4','dc006_w4',
                    'dc013_w4_1_s1','dc013_w4_1_s2','dc013_w4_1_s3','dc013_w4_1_s4',
                    'dc014_w4_1_1','dc014_w4_2_1','dc014_w4_3_1','dc014_w4_4_1','dc014_w4_5_1',
                    'dc013_w4_2_s1','dc013_w4_2_s2','dc013_w4_2_s3','dc013_w4_2_s4','dc016_w4','dc017_w4','dc018_w4',
-                   'dc020_w4','dc021_w4','dc022_w4','dc019_w4','dc023_w4',
+                   'dc020_w4','dc021_w4','dc022_w4','dc019_w4','dc023_w4','dc024_w4'
                    'dc009','dc010','dc011','dc012','dc013','dc014','dc015','dc016','dc017','dc018']
 
 select_df = cognition_data[select_col_list].copy(deep=True)
 select_df = select_df.dropna(how='any')
 select_df = select_df.reset_index(drop=True)
-select_df.to_csv(raw_data_path + 'Health_Status_and_Functioning_brief.csv',index=False)
-select_df = pd.read_csv(raw_data_path + 'Health_Status_and_Functioning_brief.csv')
+select_df.to_csv(raw_data_path + 'Cognition_brief.csv',index=False)
+select_df = pd.read_csv(raw_data_path + 'Cognition_brief.csv')
 total_score_list = []
 for index in range(len(select_df)):
     q1_list = select_df.iloc[index][['dc001_w4','dc002_w4','dc003_w4','dc005_w4','dc006_w4']].tolist()
     q1_score = q1_list.count('1 Correct')
     q2_list = select_df.iloc[index][['dc007_w4','dc008_w4','dc009_w4','dc010_w4','dc012_w4']].tolist()
     q2_score = q2_list.count('1 Correct')
+    q3_list = select_df.iloc[index][['dc013_w4_1_s1','dc013_w4_1_s2','dc013_w4_1_s3']].tolist()
+    trans_q3_list = tf.trans_ans(q3_list)
+    q3_score = len(trans_q3_list) - trans_q3_list.count(0)
+    q4_list = select_df.iloc[index][['dc016_w4','dc017_w4','dc018_w4']].tolist()
+    trans_q4_list = tf.trans_ans(q4_list)
+    q4_score = trans_q4_list.count(1)
+    q5_list = select_df.iloc[index][['dc014_w4_1_1','dc014_w4_2_1','dc014_w4_3_1','dc014_w4_4_1','dc014_w4_5_1']].tolist()
+    q5_list = list(np.array(q5_list) - np.array([93,86,79,72,65]))
+    q5_score = q5_list.count(0)
+    q6_list = select_df.iloc[index][['dc013_w4_2_s1', 'dc013_w4_2_s2', 'dc013_w4_2_s3']].tolist()
+    trans_q6_list = tf.trans_ans(q6_list)
+    q6_score = len(trans_q6_list) - trans_q6_list.count(0)
+    q7_list = select_df.iloc[index][['dc020_w4','dc021_w4','dc022_w4']].tolist()
+    q7_score = q7_list.count('1 Correct')
+    q8_list = select_df.iloc[index][['dc019_w4','dc023_w4', 'dc024_w4']].tolist()
+    print(q8_list)
+    q8_score = q8_list.count('1 Correct')
+    print(q8_score)
     # single_total_score =
