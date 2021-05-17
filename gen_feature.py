@@ -40,7 +40,7 @@ select_col_list = ['dc001_w4','dc002_w4','dc003_w4','dc005_w4','dc006_w4',
                    'dc013_w4_1_s1','dc013_w4_1_s2','dc013_w4_1_s3','dc013_w4_1_s4',
                    'dc014_w4_1_1','dc014_w4_2_1','dc014_w4_3_1','dc014_w4_4_1','dc014_w4_5_1',
                    'dc013_w4_2_s1','dc013_w4_2_s2','dc013_w4_2_s3','dc013_w4_2_s4','dc016_w4','dc017_w4','dc018_w4',
-                   'dc020_w4','dc021_w4','dc022_w4','dc019_w4','dc023_w4','dc024_w4'
+                   'dc020_w4','dc021_w4','dc022_w4','dc019_w4','dc023_w4','dc024_w4',
                    'dc009','dc010','dc011','dc012','dc013','dc014','dc015','dc016','dc017','dc018']
 
 select_df = cognition_data[select_col_list].copy(deep=True)
@@ -69,7 +69,5 @@ for index in range(len(select_df)):
     q7_list = select_df.iloc[index][['dc020_w4','dc021_w4','dc022_w4']].tolist()
     q7_score = q7_list.count('1 Correct')
     q8_list = select_df.iloc[index][['dc019_w4','dc023_w4', 'dc024_w4']].tolist()
-    print(q8_list)
     q8_score = q8_list.count('1 Correct')
-    print(q8_score)
-    # single_total_score =
+    single_total_score =
