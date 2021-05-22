@@ -48,7 +48,7 @@ select_df = select_df.dropna(how='any')
 select_df = select_df.reset_index(drop=True)
 select_df.to_csv(raw_data_path + 'Cognition_brief.csv',index=False)
 select_df = pd.read_csv(raw_data_path + 'Cognition_brief.csv')
-total_score_list = []
+total_score_list_mmse = []
 for index in range(len(select_df)):
     q1_list = select_df.iloc[index][['dc001_w4','dc002_w4','dc003_w4','dc005_w4','dc006_w4']].tolist()
     q1_score = q1_list.count('1 Correct')
@@ -70,4 +70,16 @@ for index in range(len(select_df)):
     q7_score = q7_list.count('1 Correct')
     q8_list = select_df.iloc[index][['dc019_w4','dc023_w4', 'dc024_w4']].tolist()
     q8_score = q8_list.count('1 Correct')
-    single_total_score =
+    single_total_score = q1_score + q2_score + q3_score + q4_score + q5_score + q6_score + q7_score + q8_score
+    total_score_list_mmse.append(single_total_score)
+
+total_score_list_cesd = []
+for index in range(len(select_df)):
+    q_list = select_df.iloc[index][['dc009','dc010','dc011','dc012','dc013','dc014','dc015','dc016','dc017','dc018']].tolist()
+    q_score = tf.trans_ans(q_list)
+    print(q_score)
+    single_total_score = sum(q_score)
+    print(single_total_score)
+    total_score_list_cesd.append(sum(q_score))
+
+print(total_score_list_cesd)
