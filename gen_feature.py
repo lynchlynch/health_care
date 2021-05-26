@@ -4,8 +4,8 @@ import numpy as np
 
 import trans_fuc as tf
 
-# raw_data_path = '/Users/pei/pydir/health_care/raw_data/Charles2018/'
-raw_data_path = 'D:/pydir/health_care/raw_data/Charles2018/'
+raw_data_path = '/Users/pei/pydir/health_care/raw_data/Charles2018/'
+# raw_data_path = 'D:/pydir/health_care/raw_data/Charles2018/'
 health_function_data = pd.read_csv(raw_data_path + 'Health_Status_and_Functioning.csv')
 # 视觉能力即是否有视力障碍。
 # 问卷上有几个问题：“您通畅是否戴眼镜（包括矫正视力镜片）”（da032）、
