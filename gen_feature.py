@@ -77,11 +77,39 @@ total_score_list_cesd = []
 for index in range(len(select_df)):
     q_list = select_df.iloc[index][['dc009','dc010','dc011','dc012','dc013','dc014','dc015','dc016','dc017','dc018']].tolist()
     q_score = tf.trans_ans(q_list)
-    print(q_score)
+    # print(q_score)
     single_total_score = sum(q_score)
-    print(single_total_score)
+    # print(single_total_score)
     total_score_list_cesd.append(sum(q_score))
 
-print(total_score_list_cesd)
+# print(total_score_list_cesd)
+function_data = pd.read_csv(raw_data_path + 'Health_Status_and_Functioning.csv')
+#日常生活生活活动能力是指具体包括基本日常生活活动能力和应用社会设施的生活活动能力，宏观来讲就是老年人独立应对日常生活活动的能力，
+# 可以逐一使用IADLS量表及ADLS量表进行测量确定。CHARLS问卷考察老年人的基础日常生活自理水平，是通过老年人简单的人常生活行动，
+# 即穿衣（db010）、吃饭（db012）、上下床（db013）、洗澡（db011）、自主控制大小便（db015）、上厕所（db014）
+# 这六项日常基本生活行动是否独立完成来确定的，如果其中一项日常生活行动完成困难，就可确定为ADL障碍。
+#这张表很多空值，因此选取非空的处理。我们只用到其中的某些行，所以首先把这些用到的这些列选出来，组成新表，然后删除空值
+select_col_list = ['db010','db012','db013','db015','db011', 'db014']
+select_df = function_data[select_col_list].copy(deep=True)
+select_df = select_df.dropna(how='any')
+select_df = select_df.reset_index(drop=True)
+select_df.to_csv(raw_data_path + 'Health_Status_and_Functioning_brief.csv',index=False)
+select_df = pd.read_csv(raw_data_path + 'Health_Status_and_Functioning_brief.csv')
+total_score_list_adl = []
+for index in range(len(select_df)):
+    # print('-----------' + str(index) + '--------------')
+    single_wearing = select_df.iloc[index]['db010']#.tolist()
+    single_wearing_score = tf.wearing_score(single_wearing)
 
+    single_hygiene = select_df.iloc[index]['db011']
+    single_hygiene_score = tf.hygiene_score(single_hygiene)
 
+    single_eating = select_df.iloc[index]['db012']
+    single_eating_score = tf.wearing_score(single_eating)
+
+    single_toilet = select_df.iloc[index]['db014']
+    single_excrete = select_df.iloc[index]['db015']
+    single_toex_score = tf.toex_score(single_toilet,single_excrete)
+
+    single_moving = select_df.iloc[index]['db013']
+    single_moving_score = tf.moving_score(single_moving)
