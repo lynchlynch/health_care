@@ -83,3 +83,5 @@ for index in range(len(select_df)):
     total_score_list_cesd.append(sum(q_score))
 
 print(total_score_list_cesd)
+
+
