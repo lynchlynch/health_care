@@ -12,25 +12,37 @@ health_function_data = pd.read_csv(raw_data_path + 'Health_Status_and_Functionin
 # “您看远处的东西怎么样？比如能否隔着马路认出朋友（包括戴着眼镜）？（da033）”、
 # “您是否看清楚近处的东西？”（da034），
 # 通过这些设计问题的回答，把老年人的视觉能力分为三种，视力正常(3)，视力中度障碍(2)和失明(1)。
-
+select_col_list = ['ID','da032','da033','da034']
+select_df = health_function_data[select_col_list].copy(deep=True)
+select_df = select_df.dropna(how='any')
+select_df = select_df.reset_index(drop=True)
 vision_state = []
-wear_glass_state = health_function_data['da032'].tolist()
-eyesight_at_distance = health_function_data['da033'].tolist()
-eyesight_up_close = health_function_data['da034'].tolist()
+wear_glass_state = select_df['da032'].tolist()
+print(wear_glass_state[0])
+eyesight_at_distance = select_df['da033'].tolist()
+print(eyesight_at_distance[0])
+eyesight_up_close = select_df['da034'].tolist()
+print(eyesight_up_close[0])
 for index in range(len(eyesight_at_distance)):
     if wear_glass_state[index] == '3 No' and \
             (eyesight_at_distance[index] == '1 Excellent' or eyesight_at_distance[index] == '2 Very Good') and \
             (eyesight_up_close[index] == '1 Excellent' or eyesight_up_close[index] == '2 Very Good'):
-        vision_state.append('3')
-    elif (wear_glass_state[index] == '1 Yes' or wear_glass_state[index] == '4 Sometimes') and \
-            (eyesight_at_distance[index] == '3 Good' or eyesight_at_distance[index] == '4 Fair') and \
-            (eyesight_up_close[index] == '3 Good' or eyesight_up_close[index] == '4 Fair'):
-        vision_state.append('2')
+        vision_state.append(1)
+    # elif (wear_glass_state[index] == '1 Yes' or wear_glass_state[index] == '4 Sometimes') and \
+    #         (eyesight_at_distance[index] == '3 Good' or eyesight_at_distance[index] == '4 Fair') and \
+    #         (eyesight_up_close[index] == '3 Good' or eyesight_up_close[index] == '4 Fair'):
+    #     vision_state.append(2)
     elif wear_glass_state[index] == '2 Legally Blind' and eyesight_at_distance[index] == '5 Poor' and \
             eyesight_up_close[index] == '5 Poor':
-        vision_state.append('1')
+        vision_state.append(3)
     else:
-        vision_state.append('997')
+        vision_state.append(2)
+    # else:
+    #     vision_state.append(997)
+
+vision_state_df = select_df[['ID','da032','da033','da034']].copy(deep=True)
+vision_state_df['vision_state'] = vision_state
+print(vision_state_df)
 
 #认知能力涵盖面很广，包含老年人的定向力、记忆力、回忆力和计算力四个方面。问卷中通过12个问题的测评。
 cognition_data = pd.read_csv(raw_data_path + 'Cognition.csv')
@@ -95,6 +107,8 @@ select_df = select_df.dropna(how='any')
 select_df = select_df.reset_index(drop=True)
 select_df.to_csv(raw_data_path + 'Health_Status_and_Functioning_brief.csv',index=False)
 select_df = pd.read_csv(raw_data_path + 'Health_Status_and_Functioning_brief.csv')
+
+# select_df = select_df[select_col_list].copy(deep=True)
 total_score_list_adl = []
 for index in range(len(select_df)):
     # print('-----------' + str(index) + '--------------')
@@ -113,3 +127,16 @@ for index in range(len(select_df)):
 
     single_moving = select_df.iloc[index]['db013']
     single_moving_score = tf.moving_score(single_moving)
+
+    single_adl_score = single_wearing_score + single_hygiene_score + single_eating_score + single_toex_score + \
+                       single_moving_score
+
+    if single_adl_score <= 3:
+        single_adl_range = 1
+    elif single_adl_score >= 4 and single_adl_score <= 9:
+        single_adl_range = 2
+    elif single_adl_score >= 10 and single_adl_score <= 18:
+        single_adl_range = 3
+    else:
+        single_adl_range = 4
+
